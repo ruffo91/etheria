@@ -1,1 +1,14 @@
-print "Hello Etheria!"
+import socket  
+  
+s = socket.socket()   
+s.connect(("wow.wowsaron.com", 5000))  
+  
+while True:  
+    mensaje = raw_input("> ")  
+    s.send(mensaje)  
+    if mensaje == "quit":  
+        break  
+  
+print "adios"  
+  
+s.close()
