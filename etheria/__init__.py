@@ -23,6 +23,9 @@ estado = "login"
 
 
 # BUCLE DE VENTANA
+x = -500
+y = -500
+velocidad = 5
 while True:
     
     # EVENTOS
@@ -32,16 +35,26 @@ while True:
         
         if evento.type == KEYDOWN and evento.key == K_ESCAPE and estado == "login":
             salir()
+            
+    teclas = pygame.key.get_pressed()
+    if teclas[pygame.K_w]:
+        y += velocidad
+    if teclas[pygame.K_s]:
+        y -= velocidad
+    if teclas[pygame.K_a]:
+        x += velocidad
+    if teclas[pygame.K_d]:
+        x -= velocidad
         
     # PONEMOS LA IMAGEN DE FONDO
-    fondo = pygame.image.load("images/eter.jpg")        
-    ventana.blit(fondo, (0, 0))
+    ventana.fill((0,0,0))
+    fondo = pygame.image.load("images/escenario0.jpg")        
+    ventana.blit(fondo, (x, y))
     
     # PONEMOS LOS DOS CAMPOS DE TEXTO
-    textUser = pygame.image.load("images/text.png")
-    ventana.blit(textUser, (1024 / 2 - 250, 768 / 2 + 50))
-    textPass = pygame.image.load("images/text.png")
-    ventana.blit(textPass, (1024 / 2 - 250, 768 / 2 - 50))
-    
+    textUser = pygame.image.load("images/pj01.png")
+    ventana.blit(textUser, (1024 / 2 - 50, 768 / 2 - 50))
+    #textPass = pygame.image.load("images/text.png")
+    #ventana.blit(textPass, (1024 / 2 - 250, 768 / 2 - 50))
     pygame.display.update()
     
