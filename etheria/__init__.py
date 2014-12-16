@@ -1,7 +1,7 @@
-import socket  
+import socket
   
 s = socket.socket()   
-s.connect(("wow.wowsaron.com", 5000))  
+s.connect(("localhost", 5000))  
   
 while True:  
     mensaje = raw_input("> ")  
