@@ -6,6 +6,8 @@ from random import randint
 
 # DEFINICION DE VARIABLES
 estado = "ninguno"
+clock = pygame.time.Clock()
+quit = False
 
 
 # DEFINICION DE FUNCIONES
@@ -26,15 +28,17 @@ estado = "login"
 x = -500
 y = -500
 velocidad = 5
-while True:
+while not quit:
     
     # EVENTOS
-    for evento in pygame.event.get():
+    quit = pygame.event.get(pygame.QUIT)
+    pygame.event.poll()
+    """for evento in pygame.event.get():
         if evento.type == QUIT:
             salir()
         
         if evento.type == KEYDOWN and evento.key == K_ESCAPE and estado == "login":
-            salir()
+            salir()"""
             
     teclas = pygame.key.get_pressed()
     if teclas[pygame.K_w]:
@@ -56,5 +60,6 @@ while True:
     ventana.blit(textUser, (1024 / 2 - 50, 768 / 2 - 50))
     #textPass = pygame.image.load("images/text.png")
     #ventana.blit(textPass, (1024 / 2 - 250, 768 / 2 - 50))
-    pygame.display.update()
+    pygame.display.flip()
+    clock.tick(60)
     
