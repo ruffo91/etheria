@@ -7,6 +7,7 @@ class player:
     posY = 0
     posO = 0
     mapa = 0
+    velocidad = 0
     
     # DEFINICION DE LOS GET SET
     
@@ -16,11 +17,13 @@ class player:
     def setVida(self, vida):
         self.vida = vida
         
+        
     def getNivel(self):
         return self.nivel
     
     def setNivel(self, nivel):
         self.nivel = nivel
+        
         
     def getTextura(self):
         return self.textura
@@ -28,11 +31,13 @@ class player:
     def setTextura(self, textura):
         self.textura = textura
         
+        
     def getPosX(self):
         return self.posX
     
     def setPosX(self, posX):
         self.posX = posX
+        
     
     def getPosY(self):
         return self.posY
@@ -40,17 +45,26 @@ class player:
     def setPosY(self, posY):
         self.posY = posY
         
+        
     def getPosO(self):
         return self.posO
     
     def setPosO(self, posO):
         self.posO = posO
         
+        
     def getMapa(self):
         return self.mapa
     
     def setMapa(self, mapa):
         self.mapa = mapa
+        
+        
+    def getVelocidad(self):
+        return self.velocidad
+    
+    def setVelocidad(self, velocidad):
+        self.velocidad = velocidad
         
     
     # METODOS
@@ -102,6 +116,6 @@ class player:
         self.setNivel(1)
         self.setvida(100)
         self.setTextura("")
-        self.mover(0, 0, 0, 0)
+        self.teletransportar(0, 0, 0, 0)
         
         
