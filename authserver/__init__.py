@@ -1,18 +1,36 @@
 import socket
+import time
 
-s = socket.socket()   
-#s.bind((socket.gethostname(), 5000))  
-s.bind(("localhost", 5000)) 
-s.listen(0)  
-  
-sc, addr = s.accept()  
 
-while True:  
-    recibido = sc.recv(1024)   
-    print "Recibido:", recibido  
-    sc.send(recibido)  
-  
-print "adios"  
-  
-sc.close()  
-s.close() 
+host = "127.0.0.1"
+port = 5000
+
+clientes = []
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.bind((host, port))
+s.setblocking(0)
+
+salir = False
+
+print "Servidor Iniciado"
+
+while not salir:
+    try:
+        data, addr = s.recvfrom(1024)
+        
+        if "Salir" in str(data):
+            salir = True
+        if addr not in clientes:
+            clientes.append(addr)
+            
+        print time.ctime(time.time()) + str(addr) + ": :" + str(data)
+        
+        for cliente in clientes:
+            s.sendto(data, cliente)
+            
+    except:
+        pass
+    
+s.close()
+

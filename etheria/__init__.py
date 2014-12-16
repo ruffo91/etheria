@@ -1,19 +1,21 @@
-import socket
+
 import pygame
 import sys
 from pygame.locals import *
 from random import randint 
+
+# DEFINICION DE VARIABLES
+estado = "ninguno"
+
 
 # DEFINICION DE FUNCIONES
 def salir():
     pygame.quit()
     sys.exit()
     
-# DEFINICION DE VARIABLES
-estado = "ninguno"
-
 
 # CONFIGURACION INICIAL
+
 pygame.init()
 ventana = pygame.display.set_mode((1024, 768))
 pygame.display.set_caption("Etheria")
@@ -43,17 +45,3 @@ while True:
     
     pygame.display.update()
     
-
-  
-#s = socket.socket()   
-#s.connect(("localhost", 5000))  
-  
-#while True:  
-    #mensaje = raw_input("> ")  
-    #s.send(mensaje)  
-    #if mensaje == "quit":  
-        #break  
-  
-#print "adios"  
-  
-#s.close()
