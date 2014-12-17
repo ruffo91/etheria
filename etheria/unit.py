@@ -1,15 +1,8 @@
 import threading
+import pygame
+from pygame.locals import *
 
-class unit:
-    
-    nivel = 0;
-    vida = 0;
-    textura = ""
-    posX = 0
-    posY = 0
-    posO = 0
-    mapa = 0
-    velocidad = 0
+class unit(threading.Thread):
     
     # DEFINICION DE LOS GET SET
     
@@ -34,25 +27,25 @@ class unit:
         self.textura = textura
         
         
-    def getPosX(self):
-        return self.posX
+    def getX(self):
+        return self.x
     
-    def setPosX(self, posX):
-        self.posX = posX
+    def setX(self, x):
+        self.x = x
         
     
-    def getPosY(self):
-        return self.posY
+    def getY(self):
+        return self.y
     
-    def setPosY(self, posY):
-        self.posY = posY
+    def setY(self, y):
+        self.y = y
         
         
-    def getPosO(self):
-        return self.posO
+    def getO(self):
+        return self.o
     
-    def setPosO(self, posO):
-        self.posO = posO
+    def setO(self, o):
+        self.o = o
         
         
     def getMapa(self):
@@ -69,63 +62,90 @@ class unit:
         self.velocidad = velocidad
         
     
+    def getPantalla(self):
+        return self.pantalla
+    
+    def setPantalla(self, pantalla):
+        self.pantalla = pantalla
+        
+    
+    def getSprite(self):
+        return self.sprite
+    
+    def setSprite(self, sprite):
+        self.sprite = sprite
+        
+    
     # METODOS
     
-    def mover(self, posO, velocidad):
+    def mover(self, o, velocidad):
         # MOVERSE AL SUR
-        if posO == 0: 
+        if o == 0: 
             self.setY(self.getY() - velocidad)
         # MOVERSE AL SUROESTE
-        elif posO == 1:
+        elif o == 1:
             self.setX(self.getX() - velocidad)
             self.setY(self.getY() - velocidad)
         # MOVERSE AL OESTE
-        elif posO == 2:
+        elif o == 2:
             self.setX(self.getX() - velocidad)
         # MOVERSE AL NOROESTE
-        elif posO == 3:
+        elif o == 3:
             self.setX(self.getX() - velocidad)
             self.setY(self.getY() + velocidad)
         # MOVERSE AL NORTE
-        elif posO == 4:
+        elif o == 4:
             self.setY(self.getY() + velocidad)
         # MOVERSE AL NORESTE
-        elif posO == 5:
+        elif o == 5:
             self.setX(self.getX() + velocidad)
             self.setY(self.getY() + velocidad)
         # MOVERSE AL ESTE
-        elif posO == 6:
+        elif o == 6:
             self.setX(self.getX() + velocidad)
         # MOVERSE AL SUROESTE
-        elif posO == 7:
+        elif o == 7:
             self.setX(self.getX() + velocidad)
             self.setY(self.getY() - velocidad)
             
         # ASIGNAMOS LA POSICION AL PLAYER
-        self.setPosO(posO)
+        self.setO(o)
             
     
-    def teletransportar(self, posX, posY, posO, mapa):
-        self.setPosX(posX)
-        self.setPosY(posY)
-        self.setPosO(posO)
+    def teletransportar(self, x, y, o, mapa):
+        self.setX(x)
+        self.setY(y)
+        self.setO(o)
         self.setMapa(mapa)
     
     def update(self):
         while self.getVida() > 0:
             pass
         
+    def cargarTextura(self):
+        self.setSprite(pygame.image.load(str(self.getTextura())))
+        
+    def renderizar(self):
+        self.getPantalla().getVentana().fill((0,0,0))
+        self.getPantalla().getVentana().blit(self.getSprite(), (self.getX(), self.getY()))
+        
+    def run(self):
+        self.renderizar()
+        self.run()
+        
         
     # CONSTRUCTOR
     
-    def __init__(self, *datos):
-        self.setNivel(1)
-        self.setvida(100)
-        self.setTextura("")
-        self.teletransportar(0, 0, 0, 0)
+    def __init__(self, datos, pantalla):
+        threading.Thread.__init__(self) 
         
-        rT = threading.Thread(target = self.update, args = ())
+        self.setNivel(datos["nivel"])
+        self.setvida(datos["vida"])
+        self.setTextura(datos["textura"])
+        self.teletransportar(datos["x"], datos["y"], datos["o"], datos["mapa"])
+        self.setSprite(self.cargarTextura())
+        self.setPantalla(pantalla)
         
-        rT.start()
+        self.stoprequest = threading.Event()
         
         
