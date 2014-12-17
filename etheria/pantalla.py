@@ -3,10 +3,11 @@ import pygame
 from pygame.locals import *
 import sys
 import escenario
+import player
 
 
 class pantalla(threading.Thread):
-    
+    a=0
     # METODOS GET SET
     
     def getEstado(self):
@@ -38,6 +39,12 @@ class pantalla(threading.Thread):
     
     def setEscena(self, escena):
         self.escena = escena
+        
+    def getPlayer(self):
+        return self.player
+    
+    def setPlayer(self, player):
+        self.player = player
     
     # METODOS
     
@@ -47,19 +54,20 @@ class pantalla(threading.Thread):
         
     def renderizar(self):
         self.escena.renderizar()
+        self.player.renderizar()
         pygame.display.flip()
     
     def run(self):
-        while True:
-            for evento in pygame.event.get():
-                if evento.type == QUIT:
-                    self.salir()
-                
-                if evento.type == KEYDOWN and evento.key == K_ESCAPE and self.getEstado() == "login":
-                    self.salir()
+        #while True:
             
-            self.renderizar()
-            self.reloj.tick(30)
+        """for evento in pygame.event.get():
+            if evento.type == QUIT:
+                self.salir()
+            
+            if evento.type == KEYDOWN and evento.key == K_ESCAPE and self.getEstado() == "login":
+                self.salir()
+        self.renderizar()
+        self.reloj.tick(30)"""
         #self.run()
     
     # CONSTRUCTOR
@@ -67,11 +75,13 @@ class pantalla(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self) 
         
+        maxWidth = 1024
+        maxHeight = 768
+        
         self.setReloj(pygame.time.Clock())
-        self.setActivo(False)
         
         pygame.init()
-        self.setVentana(pygame.display.set_mode((1024, 768)))
+        self.setVentana(pygame.display.set_mode((maxWidth, maxHeight)))
         pygame.display.set_caption("Etheria")
         self.setEstado("login")
         
@@ -79,4 +89,39 @@ class pantalla(threading.Thread):
         self.setEscena(escenario.escenario(datosEscena, self))
         self.getEscena().start()
         
+        datosPlayer = {"nivel":"1","vida":"100", "textura":"images/pj01.png", "x":str(maxWidth/2), "y":str(maxHeight/2), "o":"0", "mapa":"0"}
+        self.setPlayer(player.player(datosPlayer, self))
+        self.getPlayer().start()
+        
         self.stoprequest = threading.Event()
+        
+        while True:
+            for evento in pygame.event.get():
+                if evento.type == QUIT:
+                    self.salir()
+                
+                if evento.type == KEYDOWN and evento.key == K_ESCAPE and self.getEstado() == "login":
+                    self.salir()
+                    
+                if evento.type == KEYDOWN and (evento.key == K_DOWN or evento.key == K_s):
+                    self.escena.setAndando0(True)
+                if evento.type == KEYUP and (evento.key == K_DOWN or evento.key == K_s):
+                    self.escena.setAndando0(False)
+                    
+                if evento.type == KEYDOWN and (evento.key == K_DOWN or evento.key == K_a):
+                    self.escena.setAndando1(True)
+                if evento.type == KEYUP and (evento.key == K_DOWN or evento.key == K_a):
+                    self.escena.setAndando1(False)
+                    
+                if evento.type == KEYDOWN and (evento.key == K_DOWN or evento.key == K_w):
+                    self.escena.setAndando2(True)
+                if evento.type == KEYUP and (evento.key == K_DOWN or evento.key == K_w):
+                    self.escena.setAndando2(False)
+                    
+                if evento.type == KEYDOWN and (evento.key == K_DOWN or evento.key == K_d):
+                    self.escena.setAndando3(True)
+                if evento.type == KEYUP and (evento.key == K_DOWN or evento.key == K_d):
+                    self.escena.setAndando3(False)
+                    
+            self.renderizar()
+            self.reloj.tick(30)

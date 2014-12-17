@@ -31,14 +31,14 @@ class unit(threading.Thread):
         return self.x
     
     def setX(self, x):
-        self.x = x
+        self.x = int(x)
         
     
     def getY(self):
         return self.y
     
     def setY(self, y):
-        self.y = y
+        self.y = int(y)
         
         
     def getO(self):
@@ -126,12 +126,10 @@ class unit(threading.Thread):
         self.setSprite(pygame.image.load(str(self.getTextura())))
         
     def renderizar(self):
-        self.getPantalla().getVentana().fill((0,0,0))
-        self.getPantalla().getVentana().blit(self.getSprite(), (self.getX(), self.getY()))
+        self.pantalla.ventana.blit(self.sprite, (self.getX(), self.getY()))
         
     def run(self):
-        self.renderizar()
-        self.run()
+        pass
         
         
     # CONSTRUCTOR
@@ -140,10 +138,10 @@ class unit(threading.Thread):
         threading.Thread.__init__(self) 
         
         self.setNivel(datos["nivel"])
-        self.setvida(datos["vida"])
+        self.setVida(datos["vida"])
         self.setTextura(datos["textura"])
         self.teletransportar(datos["x"], datos["y"], datos["o"], datos["mapa"])
-        self.setSprite(self.cargarTextura())
+        self.cargarTextura()
         self.setPantalla(pantalla)
         
         self.stoprequest = threading.Event()
